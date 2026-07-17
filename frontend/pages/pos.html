@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POS - Venta Rápida</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <script defer src="../ui-enhancements.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <header class="header">
+      <div class="header-content mobile-header">
+        <div class="logo">
+          <h1><i class="fa-solid fa-cash-register"></i> POS</h1>
+          <p class="tagline">Venta rápida</p>
+        </div>
+
+        <div class="search-bar">
+          <input id="searchInput" class="search-input" placeholder="Buscar producto" autocomplete="off">
+          <div id="searchResults" class="search-results hidden"></div>
+          <div id="scannerStatus" class="scanner-status">Listo para vender</div>
+        </div>
+
+        <nav class="nav-links">
+          <a href="/login" class="nav-link"><i class="fa-solid fa-right-from-bracket"></i> Salir</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="pos-shell">
+        <section class="card pos-main-card">
+          <div class="card-header compact-header">
+            <h2>Carrito</h2>
+            <div class="pos-actions compact-actions">
+              <button id="btnEscanearCamara" class="btn btn-secondary btn-icon" title="Escanear"><i class="fa-solid fa-camera"></i></button>
+              <button id="btnAgregarProducto" class="btn btn-secondary btn-icon" title="Agregar producto"><i class="fa-solid fa-plus"></i></button>
+              <button id="btnLimpiarCarrito" class="btn btn-danger btn-icon" title="Limpiar"><i class="fa-solid fa-broom"></i></button>
+            </div>
+          </div>
+          <div class="card-body compact-body">
+            <div class="table-wrapper compact-table">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+                    <th>Cant.</th>
+                    <th>Precio</th>
+                    <th>Total</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="cartItems">
+                  <tr>
+                    <td colspan="5" class="text-center">El carrito está vacío</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="card pos-summary-card">
+          <div class="card-header compact-header">
+            <h2>Resumen</h2>
+          </div>
+          <div class="card-body compact-summary-body">
+            <div class="summary-box compact-summary-box">
+              <div class="summary-inline">
+                <span class="summary-label">Productos</span>
+                <strong id="cantidadProductos">0</strong>
+              </div>
+              <div class="summary-inline">
+                <span class="summary-label">Unidades</span>
+                <strong id="cantidadUnidades">0</strong>
+              </div>
+              <div class="summary-inline">
+                <span class="summary-label">Total</span>
+                <strong id="subtotalVenta" class="total-amount">$0.00</strong>
+              </div>
+            </div>
+
+            <button id="btnToggleResumenDia" class="btn btn-secondary btn-block"><i class="fa-solid fa-chart-simple"></i> Día</button>
+
+            <div id="resumenDiaPanel" class="summary-box hidden compact-mini-panel">
+              <p class="summary-section-title">Hoy</p>
+              <div class="summary-box-secondary compact-mini-box">
+                <p class="summary-label">Ventas</p>
+                <p id="ventasHoy" class="mini-value">0</p>
+                <p class="summary-label">Prod.</p>
+                <p id="productosVendidosHoy" class="mini-value">0</p>
+                <p class="summary-label">Total</p>
+                <p id="totalVendidoHoy" class="mini-value">S/ 0.00</p>
+              </div>
+              <div class="pos-actions compact-actions">
+                <button id="btnActualizarResumen" class="btn btn-secondary btn-small" title="Actualizar"><i class="fa-solid fa-rotate-right"></i></button>
+                <button id="btnGenerarReporteDia" class="btn btn-warning btn-small" title="Reporte JPG"><i class="fa-solid fa-image"></i></button>
+              </div>
+            </div>
+
+            <div class="form-group compact-form">
+              <label>Motivo</label>
+              <input id="motivoSalida" type="text" value="Venta POS">
+            </div>
+
+            <div id="processingBanner" class="processing-banner hidden">
+              <div class="processing-spinner"></div>
+              <span>Procesando...</span>
+            </div>
+
+            <button id="btnConfirmarVenta" class="btn btn-success btn-block"><i class="fa-solid fa-check"></i> Confirmar</button>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div id="modalScanner" class="modal hidden">
+    <div class="modal-content scanner-modal-content">
+      <div class="modal-header">
+        <h2>Escanear código de barras</h2>
+        <button class="modal-close" id="btnCerrarScanner" type="button">✕</button>
+      </div>
+      <div class="scanner-modal-body">
+        <div id="scannerVideo" class="scanner-video"></div>
+        <p id="scannerInfo" class="scanner-info">Permite el acceso a la cámara para escanear.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalAgregarProducto" class="modal hidden">
+    <div class="modal-content add-product-modal-content">
+      <div class="modal-header">
+        <h2>Agregar producto rápido</h2>
+        <button class="modal-close" id="btnCerrarAgregarProducto" type="button">✕</button>
+      </div>
+      <div class="modal-body">
+        <input id="quickAddSearch" class="search-input modal-search-input" placeholder="Buscar por nombre, SKU o código de barras" autocomplete="off">
+        <div id="quickAddResults" class="search-results modal-search-results hidden"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="/utils/authRedirect.js"></script>
+  <script src="/pages/pos.js"></script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Administrador</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <script defer src="../ui-enhancements.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">
+          <h1>📈 Admin Dashboard</h1>
+          <p class="tagline">Estadísticas de vendedores y ventas</p>
+        </div>
+        <nav class="nav-links">
+          <a href="/" class="nav-link">Dashboard</a>
+          <a href="/inventario" class="nav-link">Inventario</a>
+          <a href="/movimientos" class="nav-link">Movimientos</a>
+          <a href="/usuarios" class="nav-link">Usuarios</a>
+          <a href="/admin" class="nav-link active">Admin</a>
+          <a href="/mantenimiento" class="nav-link">Mantenimiento</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <section class="section">
+        <div class="section-title-row">
+          <h2 class="section-title">Filtros de estadísticas</h2>
+          <div class="button-group">
+            <button id="btnExportarGeneral" class="btn btn-secondary">Exportar general JPG</button>
+            <button id="btnExportarVendedor" class="btn btn-secondary">Exportar vendedor JPG</button>
+            <button id="btnExportarFechas" class="btn btn-secondary">Exportar por fechas JPG</button>
+          </div>
+        </div>
+
+        <div class="filter-grid">
+          <div class="form-group">
+            <label>Período</label>
+            <select id="presetPeriodo">
+              <option value="today">Hoy</option>
+              <option value="yesterday">Ayer</option>
+              <option value="week">Esta semana</option>
+              <option value="month">Este mes</option>
+              <option value="range">Rango</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Fecha desde</label>
+            <input id="fechaDesde" type="date">
+          </div>
+          <div class="form-group">
+            <label>Fecha hasta</label>
+            <input id="fechaHasta" type="date">
+          </div>
+          <div class="form-group">
+            <label>Vendedor</label>
+            <select id="selectVendedor">
+              <option value="">Todos</option>
+            </select>
+          </div>
+          <div class="form-group form-group-full">
+            <button id="btnAplicarFiltros" class="btn btn-primary btn-block">Aplicar filtros</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="adminReportArea">
+        <div class="grid-4">
+          <div class="card card-primary">
+            <div class="card-header"><h3>Total vendido</h3></div>
+            <div class="card-body"><p id="totalVendido" class="price-display">S/ 0.00</p></div>
+          </div>
+          <div class="card card-success">
+            <div class="card-header"><h3>Ventas</h3></div>
+            <div class="card-body"><p id="cantidadVentas" class="price-display">0</p></div>
+          </div>
+          <div class="card card-warning">
+            <div class="card-header"><h3>Productos vendidos</h3></div>
+            <div class="card-body"><p id="productosVendidos" class="price-display">0</p></div>
+          </div>
+          <div class="card card-danger">
+            <div class="card-header"><h3>Promedio por venta</h3></div>
+            <div class="card-body"><p id="promedioVenta" class="price-display">S/ 0.00</p></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h2 class="section-title">Ranking de vendedores</h2>
+          <div class="table-wrapper">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Vendedor</th>
+                  <th>Total vendido</th>
+                  <th>Ventas</th>
+                  <th>Productos vendidos</th>
+                  <th>Promedio</th>
+                </tr>
+              </thead>
+              <tbody id="tablaVendedores">
+                <tr><td colspan="5" class="text-center">Cargando...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="grid-4">
+          <div class="card card-primary">
+            <div class="card-header"><h3>Top productos</h3></div>
+            <div class="card-body"><ol id="listaTopProductos"></ol></div>
+          </div>
+          <div class="card card-success">
+            <div class="card-header"><h3>Top categorías</h3></div>
+            <div class="card-body"><ol id="listaTopCategorias"></ol></div>
+          </div>
+          <div class="card card-warning">
+            <div class="card-header"><h3>Productos con mayor utilidad</h3></div>
+            <div class="card-body"><ol id="listaTopUtilidad"></ol></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="/pages/admin.js"></script>
+</body>
+</html>

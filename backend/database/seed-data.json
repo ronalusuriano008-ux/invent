@@ -1,0 +1,63 @@
+{
+  "productos": [
+    {
+      "id": 1,
+      "codigo_barras": "8806090958977",
+      "sku": "001",
+      "nombre": "45w PD Power Adapter",
+      "categoria": 2,
+      "marca": "Samsung",
+      "modelo": "45W",
+      "descripcion": "Cargador USB-C de 45W para celulares y notebooks",
+      "precio_compra": 15,
+      "precio_venta": 45,
+      "stock": 2,
+      "stock_minimo": 5,
+      "ubicacion": "Tienda 1",
+      "activo": true,
+      "fecha_creacion": "2026-07-16T19:14:05.608Z"
+    },
+    {
+      "id": 2,
+      "codigo_barras": "6940000001234",
+      "sku": "002",
+      "nombre": "Cable USB-C 1m",
+      "categoria": 2,
+      "marca": "Generic",
+      "modelo": "USB-C 1M",
+      "descripcion": "Cable de carga rápida USB-C",
+      "precio_compra": 8,
+      "precio_venta": 18,
+      "stock": 10,
+      "stock_minimo": 5,
+      "ubicacion": "Tienda 2",
+      "activo": true,
+      "fecha_creacion": "2026-07-16T19:15:00.000Z"
+    },
+    {
+      "id": 3,
+      "codigo_barras": "7790000005678",
+      "sku": "003",
+      "nombre": "Protector de pantalla",
+      "categoria": 1,
+      "marca": "Glass",
+      "modelo": "PPS",
+      "descripcion": "Protector de vidrio templado",
+      "precio_compra": 6,
+      "precio_venta": 14,
+      "stock": 15,
+      "stock_minimo": 8,
+      "ubicacion": "Mostrador",
+      "activo": true,
+      "fecha_creacion": "2026-07-16T19:16:00.000Z"
+    }
+  ],
+  "categorias": [
+    { "id": 1, "nombre": "Protectores", "descripcion": "Protectores de pantalla y carcasas" },
+    { "id": 2, "nombre": "Cargadores", "descripcion": "Cargadores y cables" },
+    { "id": 3, "nombre": "Baterías", "descripcion": "Baterías de repuesto" },
+    { "id": 4, "nombre": "Accesorios", "descripcion": "Accesorios varios" }
+  ],
+  "movimientos": [],
+  "nextId": 4
+}

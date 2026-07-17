@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle del Producto</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <script defer src="../ui-enhancements.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <!-- ==================== HEADER ====================-->
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">
+          <h1>📱 PRODUCTO</h1>
+          <p class="tagline">Ficha y historial</p>
+        </div>
+
+        <div class="barcode-scanner" style="min-width: 220px;">
+          <div class="scanner-actions">
+            <button type="button" id="btnEscanearCamara" class="btn btn-secondary scanner-action">📷 Escanear</button>
+          </div>
+          <div id="scannerStatus" class="scanner-status">Listo para escanear</div>
+        </div>
+
+        <nav class="nav-links">
+          <a href="/" class="nav-link">Dashboard</a>
+          <a href="/inventario" class="nav-link">Inventario</a>
+          <a href="/movimientos" class="nav-link">Movimientos</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- ==================== MAIN CONTENT ====================-->
+    <main class="main-content">
+      <div style="margin-bottom: 2rem;">
+        <a href="/inventario" class="btn btn-secondary">← Volver</a>
+      </div>
+
+      <!-- Información del Producto -->
+      <div class="section">
+        <h2 class="section-title" id="nombreProducto">Producto</h2>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+          <!-- Información Básica -->
+          <div>
+            <h3 style="color: var(--primary); margin-bottom: 1rem;">📋 Información General</h3>
+            <div style="background-color: var(--darker); padding: 1.5rem; border-radius: var(--border-radius);">
+              <p><strong>Código de Barras:</strong> <span id="codigo">—</span></p>
+              <p><strong>SKU:</strong> <span id="sku">—</span></p>
+              <p><strong>Nombre:</strong> <span id="nombre">—</span></p>
+              <p><strong>Categoría:</strong> <span id="categoria">—</span></p>
+              <p><strong>Marca:</strong> <span id="marca">—</span></p>
+              <p><strong>Modelo:</strong> <span id="modelo">—</span></p>
+              <p><strong>Descripción:</strong> <span id="descripcion">—</span></p>
+              <p><strong>Ubicación:</strong> <span id="ubicacion">—</span></p>
+            </div>
+          </div>
+
+          <!-- Información de Precios y Stock -->
+          <div>
+            <h3 style="color: var(--success); margin-bottom: 1rem;">💰 Precios y Stock</h3>
+            <div style="background-color: var(--darker); padding: 1.5rem; border-radius: var(--border-radius);">
+              <p><strong>Precio Compra:</strong> <span id="precioCompra">—</span></p>
+              <p><strong>Precio Venta:</strong> <span id="precioVenta">—</span></p>
+              <p><strong>Margen:</strong> <span id="margen">—</span></p>
+              <hr style="border-color: var(--gray-light); margin: 1rem 0;">
+              <p style="font-size: 1.2rem;"><strong>Stock Actual:</strong> <span id="stock" style="color: var(--primary); font-size: 1.5rem;">—</span></p>
+              <p><strong>Stock Mínimo:</strong> <span id="stockMinimo">—</span></p>
+              <p id="estadoStock"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+          <button class="btn btn-success" onclick="abrirModalMovimiento('entrada')">
+            📥 Registrar Entrada
+          </button>
+          <button class="btn btn-danger" onclick="abrirModalMovimiento('salida')">
+            📤 Registrar Salida
+          </button>
+          <button class="btn btn-warning" onclick="abrirModalMovimiento('ajuste')">
+            ⚙️ Registrar Ajuste
+          </button>
+        </div>
+
+        <div class="section" style="margin-top: 1rem;">
+          <h3 style="color: var(--primary); margin-bottom: 1rem;">✏️ Editar producto</h3>
+          <form id="formEditarProducto" class="form">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Nombre</label>
+                <input type="text" id="editNombre" name="nombre" required>
+              </div>
+              <div class="form-group">
+                <label>Categoría</label>
+                <select id="editCategoria" name="categoria"></select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Marca</label>
+                <input type="text" id="editMarca" name="marca">
+              </div>
+              <div class="form-group">
+                <label>Ubicación</label>
+                <input type="text" id="editUbicacion" name="ubicacion">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Descripción</label>
+              <textarea id="editDescripcion" name="descripcion" rows="3"></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Precio compra</label>
+                <input type="number" id="editPrecioCompra" name="precio_compra" step="0.01" required>
+              </div>
+              <div class="form-group">
+                <label>Precio venta</label>
+                <input type="number" id="editPrecioVenta" name="precio_venta" step="0.01" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Stock mínimo</label>
+                <input type="number" id="editStockMinimo" name="stock_minimo" min="0">
+              </div>
+              <div class="form-group">
+                <label>Estado</label>
+                <select id="editActivo" name="activo">
+                  <option value="true">Activo</option>
+                  <option value="false">Inactivo</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Historial de Movimientos -->
+      <div class="section">
+        <h2 class="section-title">📊 Historial de Movimientos</h2>
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Tipo</th>
+                <th>Cantidad</th>
+                <th>Stock Resultante</th>
+                <th>Motivo</th>
+                <th>Usuario</th>
+              </tr>
+            </thead>
+            <tbody id="historialMovimientos">
+              <tr>
+                <td colspan="6" class="text-center">Cargando...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ==================== MODAL: ESCÁNER DE CÁMARA ====================-->
+  <div id="modalScanner" class="modal hidden">
+    <div class="modal-content scanner-modal-content">
+      <div class="modal-header">
+        <h2>Escanear código de barras</h2>
+        <button type="button" class="modal-close" id="btnCerrarScanner">✕</button>
+      </div>
+      <div class="scanner-modal-body">
+        <div id="scannerVideo" class="scanner-video"></div>
+        <p id="scannerInfo" class="scanner-info">Permite el acceso a la cámara para escanear.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: MOVIMIENTO ====================-->
+  <div id="modalMovimiento" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="tituloMovimiento">Registrar Movimiento</h2>
+        <button class="modal-close" onclick="cerrarModalMovimiento()">✕</button>
+      </div>
+      <form id="formMovimiento" class="form">
+        <div class="form-group">
+          <label>Cantidad *</label>
+          <input type="number" id="cantidadMovimiento" min="1" required>
+        </div>
+
+        <div class="form-group">
+          <label>Motivo</label>
+          <textarea id="motivoMovimiento" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Usuario</label>
+          <input type="text" id="usuarioMovimiento" value="admin">
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="cerrarModalMovimiento()">
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-primary">
+            Registrar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST NOTIFICATION ====================-->
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="/utils/authRedirect.js"></script>
+  <script src="/app.js"></script>
+  <script src="/pages/producto.js"></script>
+</body>
+</html>

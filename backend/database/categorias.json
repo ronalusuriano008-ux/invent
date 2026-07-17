@@ -1,0 +1,25 @@
+{
+  "categorias": [
+    {
+      "id": 1,
+      "nombre": "Protectores",
+      "descripcion": "Protectores de pantalla y carcasas"
+    },
+    {
+      "id": 2,
+      "nombre": "Cargadores",
+      "descripcion": "Cargadores y cables"
+    },
+    {
+      "id": 3,
+      "nombre": "Baterías",
+      "descripcion": "Baterías de repuesto"
+    },
+    {
+      "id": 4,
+      "nombre": "Accesorios",
+      "descripcion": "Accesorios varios"
+    }
+  ],
+  "nextId": 5
+}

@@ -1,0 +1,21 @@
+{
+  "name": "sistema-inventario-celulares",
+  "version": "1.0.0",
+  "description": "Sistema de inventario para tienda de accesorios y repuestos de celulares",
+  "main": "backend/app.js",
+  "scripts": {
+    "start": "node backend/app.js",
+    "dev": "nodemon backend/app.js"
+  },
+  "keywords": ["inventario", "POS", "celulares"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "body-parser": "^1.20.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

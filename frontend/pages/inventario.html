@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventario - Sistema de Gestión</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <script defer src="../ui-enhancements.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">
+          <h1>📦 INVENTARIO</h1>
+          <p class="tagline">Panel maestro de productos</p>
+        </div>
+
+        <div class="search-bar">
+          <input
+            type="search"
+            id="searchField"
+            class="search-input"
+            placeholder="Buscar por nombre, SKU, categoría o marca..."
+            autocomplete="off"
+          />
+        </div>
+
+        <nav class="nav-links">
+          <a href="/" class="nav-link">Dashboard</a>
+          <a href="/inventario" class="nav-link active">Inventario</a>
+          <a href="/movimientos" class="nav-link">Movimientos</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main-content inventory-layout">
+      <aside class="inventory-sidebar">
+        <div class="card card-primary">
+          <div class="card-header">
+            <h2>Categorías</h2>
+          </div>
+          <div class="card-body" id="categoryList">
+            Cargando categorías...
+          </div>
+        </div>
+
+        <div class="card card-success">
+          <div class="card-header">
+            <h2>Importación rápida</h2>
+          </div>
+          <div class="card-body">
+            <p class="field-label">
+              Pega filas con columnas separadas por tabulador o coma:
+              <strong>nombre,precio_compra,precio_venta,stock,categoria,sku,codigo_barras,marca</strong>
+            </p>
+            <textarea id="pasteArea" class="form-group" rows="8" placeholder="Ej. Auriculares 499 699 20 Accesorios AUR-001 1234567890"></textarea>
+            <button id="btnImportarPega" class="btn btn-primary" type="button">
+              📥 Importar catálogo
+            </button>
+          </div>
+        </div>
+
+        <div class="card card-warning">
+          <div class="card-header">
+            <h2>Acciones masivas</h2>
+          </div>
+          <div class="card-body button-grid">
+            <button id="btnMarcarActivo" class="btn btn-secondary">Activar selección</button>
+            <button id="btnMarcarInactivo" class="btn btn-danger">Desactivar selección</button>
+            <button id="btnEliminarSeleccion" class="btn btn-warning">Eliminar selección</button>
+          </div>
+        </div>
+      </aside>
+
+      <section class="inventory-board">
+        <div class="dashboard-grid" id="statsCards">
+          <article class="card card-primary">
+            <div class="card-header">
+              <h2>Total de productos</h2>
+            </div>
+            <div class="card-body">
+              <p class="stat-value" id="statTotalProductos">0</p>
+              <p class="stat-label">Productos activos en inventario</p>
+            </div>
+          </article>
+          <article class="card card-success">
+            <div class="card-header">
+              <h2>Stock total</h2>
+            </div>
+            <div class="card-body">
+              <p class="stat-value" id="statStockTotal">0</p>
+              <p class="stat-label">Unidades disponibles</p>
+            </div>
+          </article>
+          <article class="card card-warning">
+            <div class="card-header">
+              <h2>Valor inventario</h2>
+            </div>
+            <div class="card-body">
+              <p class="stat-value" id="statValorInventario">$0.00</p>
+              <p class="stat-label">Costo neto de existencias</p>
+            </div>
+          </article>
+          <article class="card card-danger">
+            <div class="card-header">
+              <h2>Producto con stock bajo</h2>
+            </div>
+            <div class="card-body">
+              <p class="stat-value" id="statStockBajo">0</p>
+              <p class="stat-label">Productos cerca de agotarse</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="section">
+          <div class="section-title-row">
+            <div>
+              <h2 class="section-title">Inventario</h2>
+              <p class="field-label">Edición directa, creación rápida y filtros avanzados.</p>
+            </div>
+            <div class="button-group">
+              <button id="btnNuevoProducto" class="btn btn-primary">➕ Nueva fila</button>
+              <button id="btnRecargar" class="btn btn-secondary">🔄 Actualizar</button>
+              <button id="btnDescargarInventario" class="btn btn-warning">📄 Exportar PDF</button>
+              <button id="btnExportarExcel" class="btn btn-success">📊 Exportar Excel</button>
+            </div>
+          </div>
+
+          <div class="filter-grid">
+            <select id="filtroCategoria" class="form-control">
+              <option value="">Todas las categorías</option>
+            </select>
+            <select id="filtroActivo" class="form-control">
+              <option value="">Todos los estados</option>
+              <option value="activo">Activo</option>
+              <option value="inactivo">Inactivo</option>
+            </select>
+          </div>
+
+          <div class="table-wrapper">
+            <table class="table compact-table" id="inventoryTable">
+              <thead>
+                <tr>
+                  <th><input id="selectAll" type="checkbox" aria-label="Seleccionar todos" /></th>
+                  <th>Nombre</th>
+                  <th>SKU</th>
+                  <th>Código</th>
+                  <th>Categoría</th>
+                  <th>Marca</th>
+                  <th>Compra</th>
+                  <th>Venta</th>
+                  <th>Stock</th>
+                  <th>Stock mínimo</th>
+                  <th>Ubicación</th>
+                  <th>Activo</th>
+                </tr>
+              </thead>
+              <tbody id="tablaProductos">
+                <tr>
+                  <td colspan="12" class="text-center">Cargando inventario...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="/utils/authRedirect.js"></script>
+  <script src="/app.js"></script>
+  <script src="/pages/inventario.js"></script>
+</body>
+</html>

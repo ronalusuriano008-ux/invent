@@ -1,0 +1,51 @@
+{
+  "nextId": 17,
+  "usuarios": [
+    {
+      "usuario": "admin",
+      "nombre": "Administrador",
+      "correo": "admin@invent.com",
+      "password": "6368dbd8b7704fc6836c3a6e5dc40bf4:403a39a5d4af68aa93bb52f280296bb773717b4ec655a514a9fb0133732b3443097a18ab40092e5028a896281261e5563c6178f8ed9f3c577a49aeed7010dad9",
+      "rol": 1,
+      "activo": true,
+      "fecha_creacion": "2026-07-16T22:30:34.760Z",
+      "fecha_actualizacion": "2026-07-17T20:43:00.438Z",
+      "id": 12,
+      "token": "d8de09428601570956571133fbb6aa8dc08ae48a808e4dee08891cf70933ce02"
+    },
+    {
+      "usuario": "ronal",
+      "nombre": "Ronal",
+      "correo": "rony31826@gmail.com",
+      "password": "be1b0d04930d5c15bc9b34eb39ccbe43:da17f492868501b8e0f658ae4969e863e93fcac8021730d787e1e966916d2a58680d5fa441cc5351cf571df6bc5bbc39ed424e122c6546b9700361673fac80f9",
+      "rol": 2,
+      "activo": true,
+      "fecha_creacion": "2026-07-16T22:44:23.815Z",
+      "fecha_actualizacion": "2026-07-17T20:42:47.716Z",
+      "id": 14,
+      "token": "206da1f560677f5dcb9618ba0814d87090625b91f50bba5ea02c7b8a657640c5"
+    },
+    {
+      "usuario": "seller1",
+      "nombre": "Vendedor",
+      "correo": "seller@test.com",
+      "password": "3ccdc598d37a6650a645dcfc4d35ab44:db644450576245df81883d1ecb06be5c264aa58363805194ef0823878e9bc4021c99d4e60c624d540f687325f373f1eb42f34c2a4096efb8dfa13ff7690e4f72",
+      "rol": 2,
+      "activo": true,
+      "fecha_creacion": "2026-07-17T13:40:03.161Z",
+      "fecha_actualizacion": "2026-07-17T13:40:03.161Z",
+      "id": 15
+    },
+    {
+      "usuario": "seller-1784316861088",
+      "nombre": "Vendedor",
+      "correo": "seller-1784316861088@test.com",
+      "password": "03523ab0a9cc33b0b883d529ecb97c29:72118c8ed83708ac6624270230348da0aadd7d03550e747c55bbc5b27ab539707d5868e25f3b0e4aceed7fb6563d49e4343322c888c30ac87756d7d94e35b846",
+      "rol": 2,
+      "activo": true,
+      "fecha_creacion": "2026-07-17T19:34:21.558Z",
+      "fecha_actualizacion": "2026-07-17T19:34:21.558Z",
+      "id": 16
+    }
+  ]
+}

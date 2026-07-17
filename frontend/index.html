@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Inventario - Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="ui-enhancements.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <!-- ==================== HEADER ====================-->
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">
+          <h1>📱 INVENTARIO</h1>
+          <p class="tagline">Gestión de Celulares y Accesorios</p>
+        </div>
+
+        <div class="search-bar">
+          <input 
+            type="text" 
+            id="searchInput" 
+            class="search-input" 
+            placeholder="Buscar por código, SKU o nombre..."
+            autocomplete="off"
+          >
+          <div class="barcode-scanner">
+            <div class="scanner-actions">
+              <button type="button" id="btnEscanearCamara" class="btn btn-secondary scanner-action">📷 Escanear</button>
+            </div>
+            <div id="scannerStatus" class="scanner-status">Listo para escanear</div>
+          </div>
+          <div id="searchResults" class="search-results hidden"></div>
+        </div>
+
+        <nav class="nav-links">
+          <a href="/" class="nav-link active">Dashboard</a>
+          <a href="/inventario" class="nav-link">Inventario</a>
+          <a href="/movimientos" class="nav-link">Movimientos</a>
+          <a href="/usuarios" class="nav-link">Usuarios</a>
+          <a href="/admin" class="nav-link">Admin</a>
+          <a href="/mantenimiento" class="nav-link">Mantenimiento</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- ==================== MAIN CONTENT ====================-->
+    <main class="main-content">
+      <!-- Barra de herramientas -->
+      <div class="toolbar">
+        <button id="btnNuevoProducto" class="btn btn-primary">
+          ➕ Nuevo Producto
+        </button>
+        <button id="btnRecargar" class="btn btn-secondary">
+          🔄 Recargar
+        </button>
+      </div>
+
+      <!-- Dashboard Grid -->
+      <div class="dashboard-grid">
+        <!-- Tarjeta: Total de Productos -->
+        <div class="card card-primary">
+          <div class="card-header">
+            <h2>📦 Productos Registrados</h2>
+          </div>
+          <div class="card-body">
+            <p class="stat-value" id="totalProductos">0</p>
+            <p class="stat-label">productos activos</p>
+          </div>
+        </div>
+
+        <!-- Tarjeta: Stock Total -->
+        <div class="card card-success">
+          <div class="card-header">
+            <h2>📊 Stock Total</h2>
+          </div>
+          <div class="card-body">
+            <p class="stat-value" id="stockTotal">0</p>
+            <p class="stat-label">unidades en inventario</p>
+          </div>
+        </div>
+
+        <!-- Tarjeta: Stock Bajo -->
+        <div class="card card-warning">
+          <div class="card-header">
+            <h2>⚠️ Stock Bajo</h2>
+          </div>
+          <div class="card-body">
+            <p class="stat-value" id="stockBajo">0</p>
+            <p class="stat-label">productos por reponer</p>
+          </div>
+        </div>
+
+        <!-- Tarjeta: Stock Agotado -->
+        <div class="card card-danger">
+          <div class="card-header">
+            <h2>❌ Agotados</h2>
+          </div>
+          <div class="card-body">
+            <p class="stat-value" id="agotados">0</p>
+            <p class="stat-label">productos sin stock</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección: Últimos Movimientos -->
+      <div class="section">
+        <h2 class="section-title">📋 Últimos Movimientos</h2>
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Producto</th>
+                <th>Tipo</th>
+                <th>Cantidad</th>
+                <th>Motivo</th>
+                <th>Usuario</th>
+              </tr>
+            </thead>
+            <tbody id="ultimosMovimientos">
+              <tr>
+                <td colspan="6" class="text-center">Cargando...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Sección: Productos con Stock Bajo -->
+      <div class="section">
+        <h2 class="section-title">⚠️ Productos con Stock Bajo</h2>
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Stock</th>
+                <th>Mínimo</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="productosStockBajo">
+              <tr>
+                <td colspan="5" class="text-center">Cargando...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ==================== MODAL: ESCÁNER DE CÁMARA ====================-->
+  <div id="modalScanner" class="modal hidden">
+    <div class="modal-content scanner-modal-content">
+      <div class="modal-header">
+        <h2>Escanear código de barras</h2>
+        <button type="button" class="modal-close" id="btnCerrarScanner">✕</button>
+      </div>
+      <div class="scanner-modal-body">
+        <div id="scannerVideo" class="scanner-video"></div>
+        <p id="scannerInfo" class="scanner-info">Permite el acceso a la cámara para escanear.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: NUEVO PRODUCTO ====================-->
+  <div id="modalProducto" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Nuevo Producto</h2>
+        <button class="modal-close" onclick="cerrarModalProducto()">✕</button>
+      </div>
+      <form id="formProducto" class="form">
+        <div class="form-group">
+          <label>Código de Barras *</label>
+          <input type="text" name="codigo_barras" required>
+        </div>
+
+        <div class="form-group">
+          <label>SKU</label>
+          <input type="text" name="sku">
+        </div>
+
+        <div class="form-group">
+          <label>Nombre *</label>
+          <input type="text" name="nombre" required>
+        </div>
+
+        <div class="form-group">
+          <label>Categoría *</label>
+          <select name="categoria" id="selectCategoria" required></select>
+        </div>
+
+        <div class="form-group">
+          <label>Marca</label>
+          <input type="text" name="marca">
+        </div>
+
+        <div class="form-group">
+          <label>Modelo</label>
+          <input type="text" name="modelo">
+        </div>
+
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea name="descripcion" rows="3"></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Precio Compra *</label>
+            <input type="number" name="precio_compra" step="0.01" required>
+          </div>
+          <div class="form-group">
+            <label>Precio Venta *</label>
+            <input type="number" name="precio_venta" step="0.01" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Stock Inicial</label>
+            <input type="number" name="stock" value="0">
+          </div>
+          <div class="form-group">
+            <label>Stock Mínimo</label>
+            <input type="number" name="stock_minimo" value="5">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Ubicación</label>
+          <input type="text" name="ubicacion" placeholder="Ej: Estante A1">
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="cerrarModalProducto()">
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-primary">
+            Guardar Producto
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST NOTIFICATION ====================-->
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="/utils/authRedirect.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mantenimiento Administrador</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <script defer src="../ui-enhancements.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">
+          <h1>🛠️ Mantenimiento</h1>
+          <p class="tagline">Operaciones de administrador y auditoría</p>
+        </div>
+        <nav class="nav-links">
+          <a href="/" class="nav-link">Dashboard</a>
+          <a href="/inventario" class="nav-link">Inventario</a>
+          <a href="/movimientos" class="nav-link">Movimientos</a>
+          <a href="/usuarios" class="nav-link">Usuarios</a>
+          <a href="/mantenimiento" class="nav-link active">Mantenimiento</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <section class="section">
+        <h2 class="section-title">📊 Resumen de mantenimiento</h2>
+        <div class="grid-4">
+          <div class="card card-primary">
+            <div class="card-header"><h3>Productos</h3></div>
+            <div class="card-body"><p id="resumenProductos">0</p></div>
+          </div>
+          <div class="card card-success">
+            <div class="card-header"><h3>Categorías</h3></div>
+            <div class="card-body"><p id="resumenCategorias">0</p></div>
+          </div>
+          <div class="card card-warning">
+            <div class="card-header"><h3>Movimientos</h3></div>
+            <div class="card-body"><p id="resumenMovimientos">0</p></div>
+          </div>
+          <div class="card card-danger">
+            <div class="card-header"><h3>Usuarios</h3></div>
+            <div class="card-body"><p id="resumenUsuarios">0</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">⚠️ Operaciones de mantenimiento</h2>
+        <div class="button-grid">
+          <button id="btnEliminarTodosProductos" class="btn btn-danger">Eliminar todos los productos</button>
+          <button id="btnEliminarTodasCategorias" class="btn btn-danger">Eliminar todas las categorías</button>
+          <button id="btnEliminarMovimientos" class="btn btn-danger">Eliminar historial de movimientos</button>
+          <button id="btnEliminarUsuariosSinAdmin" class="btn btn-danger">Eliminar usuarios sin admin</button>
+          <button id="btnVaciarStock" class="btn btn-warning">Vaciar stock</button>
+          <button id="btnEliminarInactivos" class="btn btn-warning">Eliminar productos inactivos</button>
+          <button id="btnRestaurarDatosPrueba" class="btn btn-secondary">Restaurar datos de prueba</button>
+          <button id="btnReiniciarInventario" class="btn btn-secondary">Reiniciar inventario</button>
+        </div>
+        <div class="form-group">
+          <label for="selectCategoriaMantenimiento">Eliminar productos por categoría</label>
+          <div class="form-inline">
+            <select id="selectCategoriaMantenimiento"></select>
+            <button id="btnEliminarPorCategoria" class="btn btn-danger">Eliminar categoría</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">🔎 Filtro de auditoría</h2>
+        <div class="filter-grid">
+          <div class="form-group"><label>Usuario</label><input id="filtroUsuario" type="text"></div>
+          <div class="form-group"><label>Tipo</label><select id="filtroTipo"><option value="">Todos</option><option value="ENTRADA">ENTRADA</option><option value="SALIDA">SALIDA</option><option value="AJUSTE">AJUSTE</option></select></div>
+          <div class="form-group"><label>Motivo</label><input id="filtroMotivo" type="text"></div>
+          <div class="form-group"><label>Fecha desde</label><input id="filtroDesde" type="date"></div>
+          <div class="form-group"><label>Fecha hasta</label><input id="filtroHasta" type="date"></div>
+          <div class="form-group form-group-full"><button id="btnBuscarHistorial" class="btn btn-primary">Buscar historial</button></div>
+        </div>
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Producto</th>
+                <th>Tipo</th>
+                <th>Cantidad</th>
+                <th>Usuario</th>
+                <th>Motivo</th>
+              </tr>
+            </thead>
+            <tbody id="tablaHistorial">
+              <tr><td colspan="6" class="text-center">Use los filtros para buscar el historial</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="./mantenimiento.js" defer></script>
+</body>
+</html>

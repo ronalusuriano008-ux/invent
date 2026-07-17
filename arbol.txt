@@ -1,0 +1,44 @@
+.
+├── arbol.txt
+├── ARQUITECTURA.md
+├── backend
+│   ├── app.js
+
+│   ├── controllers
+│   │   ├── CategoriaController.js
+│   │   ├── MovimientoController.js
+│   │   └── ProductoController.js
+│   ├── database
+│   │   ├── categorias.json
+│   │   ├── DatabaseService.js
+│   │   ├── movimientos.json
+│   │   ├── productos.json
+│   │   └── seed-data.json
+│   ├── middlewares
+│   │   └── index.js
+│   ├── routes
+│   │   ├── categoriasRoutes.js
+│   │   ├── movimientosRoutes.js
+│   │   └── productosRoutes.js
+│   └── services
+│       ├── CategoriaService.js
+│       ├── MovimientoService.js
+│       └── ProductoService.js
+├── CASOS_USO.md
+├── frontend
+│   ├── app.js
+│   ├── index.html
+│   ├── pages
+│   │   ├── inventario.html
+│   │   ├── inventario.js
+│   │   ├── movimientos.html
+│   │   ├── movimientos.js
+│   │   ├── producto.html
+│   │   └── producto.js
+│   └── style.css
+├── GUIA_RAPIDA.md
+├── package.json
+├── package-lock.json
+└── README.md
+
+9 directories, 32 files

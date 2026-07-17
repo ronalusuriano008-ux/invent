@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movimientos - Sistema de Gestión</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <script defer src="../ui-enhancements.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <!-- ==================== HEADER ====================-->
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">
+          <h1>📊 MOVIMIENTOS</h1>
+          <p class="tagline">Historial de operaciones</p>
+        </div>
+
+        <div class="barcode-scanner" style="min-width: 220px;">
+          <div class="scanner-actions">
+            <button type="button" id="btnEscanearCamara" class="btn btn-secondary scanner-action">📷 Escanear</button>
+          </div>
+          <div id="scannerStatus" class="scanner-status">Listo para escanear</div>
+        </div>
+
+        <nav class="nav-links">
+          <a href="/" class="nav-link">Dashboard</a>
+          <a href="/inventario" class="nav-link">Inventario</a>
+          <a href="/movimientos" class="nav-link active">Movimientos</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- ==================== MAIN CONTENT ====================-->
+    <main class="main-content">
+      <!-- Filtros -->
+      <div class="toolbar">
+        <select id="filtroTipo" class="form-control">
+          <option value="">Todos los tipos</option>
+          <option value="ENTRADA">📥 Entrada</option>
+          <option value="SALIDA">📤 Salida</option>
+          <option value="AJUSTE">⚙️ Ajuste</option>
+        </select>
+
+        <input type="date" id="filtroFecha" class="form-control">
+
+        <button id="btnRecargar" class="btn btn-secondary">
+          🔄 Recargar
+        </button>
+
+        <button id="btnExportar" class="btn btn-secondary">
+          📥 Exportar CSV
+        </button>
+      </div>
+
+      <!-- Tabla de movimientos -->
+      <div class="section">
+        <h2 class="section-title">📋 Historial Completo de Movimientos</h2>
+        
+        <!-- Resumen -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+          <div style="background-color: var(--darker); padding: 1rem; border-radius: var(--border-radius); border-left: 4px solid var(--success);">
+            <p style="color: var(--gray); font-size: 0.9rem;">Entradas</p>
+            <p style="font-size: 1.5rem; font-weight: bold; color: var(--success);" id="totalEntradas">0</p>
+          </div>
+          <div style="background-color: var(--darker); padding: 1rem; border-radius: var(--border-radius); border-left: 4px solid var(--danger);">
+            <p style="color: var(--gray); font-size: 0.9rem;">Salidas</p>
+            <p style="font-size: 1.5rem; font-weight: bold; color: var(--danger);" id="totalSalidas">0</p>
+          </div>
+          <div style="background-color: var(--darker); padding: 1rem; border-radius: var(--border-radius); border-left: 4px solid var(--warning);">
+            <p style="color: var(--gray); font-size: 0.9rem;">Ajustes</p>
+            <p style="font-size: 1.5rem; font-weight: bold; color: var(--warning);" id="totalAjustes">0</p>
+          </div>
+        </div>
+
+        <!-- Tabla -->
+        <div class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Producto</th>
+                <th>Tipo</th>
+                <th>Cantidad</th>
+                <th>Motivo</th>
+                <th>Usuario</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tablaMovimientos">
+              <tr>
+                <td colspan="7" class="text-center">Cargando...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ==================== MODAL: ESCÁNER DE CÁMARA ====================-->
+  <div id="modalScanner" class="modal hidden">
+    <div class="modal-content scanner-modal-content">
+      <div class="modal-header">
+        <h2>Escanear código de barras</h2>
+        <button type="button" class="modal-close" id="btnCerrarScanner">✕</button>
+      </div>
+      <div class="scanner-modal-body">
+        <div id="scannerVideo" class="scanner-video"></div>
+        <p id="scannerInfo" class="scanner-info">Permite el acceso a la cámara para escanear.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST NOTIFICATION ====================-->
+  <div id="toast" class="toast hidden"></div>
+
+  <style>
+    .form-control {
+      padding: 0.75rem;
+      background-color: var(--darker);
+      border: 1px solid var(--gray-light);
+      border-radius: var(--border-radius);
+      color: var(--light);
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .form-control:hover,
+    .form-control:focus {
+      border-color: var(--primary);
+    }
+  </style>
+
+  <script src="/utils/authRedirect.js"></script>
+  <script src="/app.js"></script>
+  <script src="/pages/movimientos.js"></script>
+</body>
+</html>
