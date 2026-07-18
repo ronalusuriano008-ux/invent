@@ -10,19 +10,23 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="../style.css">
   <script defer src="../ui-enhancements.js"></script>
+  <script defer src="../api-client.js"></script>
 </head>
 <body>
   <div class="app-container">
     <header class="header">
       <div class="header-content">
         <div class="logo">
-          <h1>👤 USUARIOS</h1>
-          <p class="tagline">Gestión de accesos</p>
+          <h1><i class="fa-solid fa-users" aria-hidden="true"></i> Gestión de usuarios</h1>
+          <p class="tagline">Accesos, roles y permisos</p>
         </div>
         <nav class="nav-links">
-          <a href="/" class="nav-link">Dashboard</a>
-          <a href="/inventario" class="nav-link">Inventario</a>
-          <a href="/movimientos" class="nav-link">Movimientos</a>
+          <a href="/" class="nav-link"><i class="fa-solid fa-gauge-high" aria-hidden="true"></i> Dashboard</a>
+          <a href="/inventario" class="nav-link"><i class="fa-solid fa-boxes-stacked" aria-hidden="true"></i> Inventario</a>
+          <a href="/movimientos" class="nav-link"><i class="fa-solid fa-arrow-right-arrow-left" aria-hidden="true"></i> Movimientos</a>
+          <a href="/usuarios" class="nav-link active"><i class="fa-solid fa-users" aria-hidden="true"></i> Usuarios</a>
+          <a href="/admin" class="nav-link"><i class="fa-solid fa-chart-pie" aria-hidden="true"></i> Administración</a>
+          <a href="/mantenimiento" class="nav-link"><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i> Mantenimiento</a>
         </nav>
       </div>
     </header>

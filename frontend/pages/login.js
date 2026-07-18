@@ -9,16 +9,7 @@ function mostrarToast(mensaje, tipo = 'success') {
 }
 
 async function apiCall(endpoint, options = {}) {
-  const response = await fetch(`/api${endpoint}`, {
-    headers: { 'Content-Type': 'application/json', ...options.headers },
-    ...options
-  });
-
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    throw new Error(data.error || 'Error de autenticación');
-  }
-  return data;
+  return window.inventApi.call(endpoint, options);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -38,11 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
       localStorage.setItem('invent_user', JSON.stringify(response.usuario));
       localStorage.setItem('invent_token', response.token);
-      mostrarToast('✅ Bienvenido', 'success');
+      mostrarToast('Acceso concedido', 'success');
 
       window.location.href = response.usuario.rol === 1 ? '/' : '/pos';
     } catch (error) {
-      mostrarToast(`❌ ${error.message}`, 'error');
+      mostrarToast(error.message, 'error');
     }
   });
 });

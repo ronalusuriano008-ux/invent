@@ -17,22 +17,7 @@ function formatearMoneda(valor) {
 }
 
 async function apiCall(endpoint, options = {}) {
-  const token = localStorage.getItem('invent_token');
-  const response = await fetch(`/api${endpoint}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...options.headers
-    },
-    ...options
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.error || 'Error al solicitar datos');
-  }
-
-  return await response.json();
+  return window.inventApi.call(endpoint, options);
 }
 
 function calcularRango(periodo) {
@@ -90,7 +75,7 @@ async function cargarVendedores() {
       .map(usuario => `<option value="${usuario.id}">${usuario.nombre || usuario.usuario}</option>`)
       .join('');
   } catch (error) {
-    mostrarToast(`❌ ${error.message}`, 'error');
+    mostrarToast(error.message, 'error');
   }
 }
 
@@ -146,7 +131,7 @@ async function cargarEstadisticas() {
     const data = await apiCall(`/movimientos/estadisticas?${params.toString()}`);
     renderEstadisticas(data);
   } catch (error) {
-    mostrarToast(`❌ ${error.message}`, 'error');
+    mostrarToast(error.message, 'error');
   }
 }
 
@@ -185,10 +170,10 @@ async function exportarReporteAdmin(titulo) {
     enlace.download = `${titulo.toLowerCase().replace(/\s+/g, '-')}-${new Date().toISOString().split('T')[0]}.jpg`;
     enlace.click();
     panel.remove();
-    mostrarToast('✅ Reporte descargado', 'success');
+    mostrarToast('Reporte descargado', 'success');
   } catch (error) {
     console.error(error);
-    mostrarToast('❌ No se pudo generar el reporte', 'error');
+    mostrarToast('No se pudo generar el reporte', 'error');
   }
 }
 
@@ -203,6 +188,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.location.href = '/pos';
     return;
   }
+
+  const menuButton = document.getElementById('btnAdminMenu');
+  const menuOverlay = document.getElementById('adminSidebarOverlay');
+  const setMenuOpen = (isOpen) => {
+    document.body.classList.toggle('admin-menu-open', isOpen);
+    menuButton?.setAttribute('aria-expanded', String(isOpen));
+    menuOverlay?.setAttribute('aria-hidden', String(!isOpen));
+  };
+
+  menuButton?.addEventListener('click', () => setMenuOpen(!document.body.classList.contains('admin-menu-open')));
+  menuOverlay?.addEventListener('click', () => setMenuOpen(false));
+  document.querySelectorAll('.admin-nav-link, .admin-pos-link').forEach(link => link.addEventListener('click', () => setMenuOpen(false)));
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') setMenuOpen(false);
+  });
 
   document.getElementById('presetPeriodo')?.addEventListener('change', () => {
     actualizarFiltros();

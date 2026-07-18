@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="../style.css">
   <script defer src="../ui-enhancements.js"></script>
+  <script defer src="../api-client.js"></script>
 </head>
 <body>
   <div class="app-container">
@@ -124,7 +125,7 @@
     <div class="modal-content scanner-modal-content">
       <div class="modal-header">
         <h2>Escanear código de barras</h2>
-        <button class="modal-close" id="btnCerrarScanner" type="button">✕</button>
+        <button class="modal-close" id="btnCerrarScanner" type="button" aria-label="Cerrar"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
       </div>
       <div class="scanner-modal-body">
         <div id="scannerVideo" class="scanner-video"></div>
@@ -137,7 +138,7 @@
     <div class="modal-content add-product-modal-content">
       <div class="modal-header">
         <h2>Agregar producto rápido</h2>
-        <button class="modal-close" id="btnCerrarAgregarProducto" type="button">✕</button>
+        <button class="modal-close" id="btnCerrarAgregarProducto" type="button" aria-label="Cerrar"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
       </div>
       <div class="modal-body">
         <input id="quickAddSearch" class="search-input modal-search-input" placeholder="Buscar por nombre, SKU o código de barras" autocomplete="off">

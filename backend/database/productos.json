@@ -10,13 +10,13 @@
       "descripcion": "cargador 45 whats marca samsung",
       "precio_compra": 15,
       "precio_venta": 45,
-      "stock": 0,
+      "stock": 2,
       "stock_minimo": 5,
       "ubicacion": "tienda 1",
       "activo": true,
       "fecha_creacion": "2026-07-16T19:14:05.608Z",
       "id": 1,
-      "fecha_actualizacion": "2026-07-17T18:16:39.632Z"
+      "fecha_actualizacion": "2026-07-18T17:40:47.462Z"
     },
     {
       "codigo_barras": "194252156926",

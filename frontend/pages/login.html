@@ -10,12 +10,13 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="../style.css">
   <script defer src="../ui-enhancements.js"></script>
+  <script defer src="../api-client.js"></script>
 </head>
 <body>
   <div class="app-container" style="justify-content: center; align-items: center; padding: 2rem;">
     <div class="card" style="max-width: 480px; width: 100%;">
       <div class="card-header">
-        <h2>🔐 Acceso al sistema</h2>
+        <h2><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Acceso al sistema</h2>
       </div>
       <div class="card-body">
         <form id="formLogin" class="form">
@@ -28,7 +29,7 @@
             <input type="password" id="password" required>
           </div>
           <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Ingresar</button>
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> Ingresar</button>
           </div>
         </form>
         <p style="margin-top: 1rem; color: var(--gray);">Credenciales iniciales: admin / admin123</p>

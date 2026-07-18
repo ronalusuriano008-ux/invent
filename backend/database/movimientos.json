@@ -291,7 +291,31 @@
       "es_venta": true,
       "venta_id": "venta-1784316862084-a96lq1",
       "id": 19
+    },
+    {
+      "producto_id": 1,
+      "tipo": "ENTRADA",
+      "cantidad": 2,
+      "motivo": "compra ",
+      "detalle": "45w pd power adapter",
+      "fecha": "2026-07-18T17:40:47.065Z",
+      "hora": "12:40:47",
+      "usuario": "admin",
+      "usuario_id": 12,
+      "nombre_usuario": "Administrador",
+      "rol": 1,
+      "precio_original": 45,
+      "precio_vendido": 45,
+      "precio_unitario": 45,
+      "subtotal": 90,
+      "total": 90,
+      "observaciones": "",
+      "producto_nombre": "45w pd power adapter",
+      "categoria_id": 2,
+      "es_venta": false,
+      "venta_id": null,
+      "id": 20
     }
   ],
-  "nextId": 20
+  "nextId": 21
 }

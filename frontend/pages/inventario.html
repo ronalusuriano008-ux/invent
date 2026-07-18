@@ -10,14 +10,15 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="../style.css">
   <script defer src="../ui-enhancements.js"></script>
+  <script defer src="../api-client.js"></script>
 </head>
 <body>
   <div class="app-container">
     <header class="header">
       <div class="header-content">
         <div class="logo">
-          <h1>📦 INVENTARIO</h1>
-          <p class="tagline">Panel maestro de productos</p>
+          <h1><i class="fa-solid fa-boxes-stacked" aria-hidden="true"></i> Gestión de inventario</h1>
+          <p class="tagline">Catálogo, stock y categorías</p>
         </div>
 
         <div class="search-bar">
@@ -31,9 +32,12 @@
         </div>
 
         <nav class="nav-links">
-          <a href="/" class="nav-link">Dashboard</a>
-          <a href="/inventario" class="nav-link active">Inventario</a>
-          <a href="/movimientos" class="nav-link">Movimientos</a>
+          <a href="/" class="nav-link"><i class="fa-solid fa-gauge-high" aria-hidden="true"></i> Dashboard</a>
+          <a href="/inventario" class="nav-link active"><i class="fa-solid fa-boxes-stacked" aria-hidden="true"></i> Inventario</a>
+          <a href="/movimientos" class="nav-link"><i class="fa-solid fa-arrow-right-arrow-left" aria-hidden="true"></i> Movimientos</a>
+          <a href="/usuarios" class="nav-link"><i class="fa-solid fa-users" aria-hidden="true"></i> Usuarios</a>
+          <a href="/admin" class="nav-link"><i class="fa-solid fa-chart-pie" aria-hidden="true"></i> Administración</a>
+          <a href="/mantenimiento" class="nav-link"><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i> Mantenimiento</a>
         </nav>
       </div>
     </header>
@@ -60,7 +64,7 @@
             </p>
             <textarea id="pasteArea" class="form-group" rows="8" placeholder="Ej. Auriculares 499 699 20 Accesorios AUR-001 1234567890"></textarea>
             <button id="btnImportarPega" class="btn btn-primary" type="button">
-              📥 Importar catálogo
+              <i class="fa-solid fa-file-import" aria-hidden="true"></i> Importar catálogo
             </button>
           </div>
         </div>
@@ -124,10 +128,10 @@
               <p class="field-label">Edición directa, creación rápida y filtros avanzados.</p>
             </div>
             <div class="button-group">
-              <button id="btnNuevoProducto" class="btn btn-primary">➕ Nueva fila</button>
-              <button id="btnRecargar" class="btn btn-secondary">🔄 Actualizar</button>
-              <button id="btnDescargarInventario" class="btn btn-warning">📄 Exportar PDF</button>
-              <button id="btnExportarExcel" class="btn btn-success">📊 Exportar Excel</button>
+              <button id="btnNuevoProducto" class="btn btn-primary"><i class="fa-solid fa-plus" aria-hidden="true"></i> Nuevo producto</button>
+              <button id="btnRecargar" class="btn btn-secondary"><i class="fa-solid fa-rotate" aria-hidden="true"></i> Actualizar</button>
+              <button id="btnDescargarInventario" class="btn btn-warning"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Exportar PDF</button>
+              <button id="btnExportarExcel" class="btn btn-success"><i class="fa-solid fa-file-excel" aria-hidden="true"></i> Exportar Excel</button>
             </div>
           </div>
 

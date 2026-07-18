@@ -10,34 +10,43 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="../style.css">
   <script defer src="../ui-enhancements.js"></script>
+  <script defer src="../api-client.js"></script>
 </head>
 <body>
-  <div class="app-container">
-    <header class="header">
-      <div class="header-content">
-        <div class="logo">
-          <h1>📈 Admin Dashboard</h1>
-          <p class="tagline">Estadísticas de vendedores y ventas</p>
-        </div>
-        <nav class="nav-links">
-          <a href="/" class="nav-link">Dashboard</a>
-          <a href="/inventario" class="nav-link">Inventario</a>
-          <a href="/movimientos" class="nav-link">Movimientos</a>
-          <a href="/usuarios" class="nav-link">Usuarios</a>
-          <a href="/admin" class="nav-link active">Admin</a>
-          <a href="/mantenimiento" class="nav-link">Mantenimiento</a>
-        </nav>
+  <div class="admin-layout">
+    <aside id="adminSidebar" class="admin-sidebar" aria-label="Navegación administrativa">
+      <div class="admin-sidebar-brand">
+        <span class="admin-brand-icon"><i class="fa-solid fa-chart-line" aria-hidden="true"></i></span>
+        <span><strong>Administración</strong><small>Inventario y ventas</small></span>
       </div>
-    </header>
+      <nav class="admin-nav">
+        <a href="/" class="admin-nav-link"><i class="fa-solid fa-gauge-high" aria-hidden="true"></i><span>Dashboard</span></a>
+        <a href="/inventario" class="admin-nav-link"><i class="fa-solid fa-boxes-stacked" aria-hidden="true"></i><span>Inventario</span></a>
+        <a href="/movimientos" class="admin-nav-link"><i class="fa-solid fa-arrow-right-arrow-left" aria-hidden="true"></i><span>Movimientos</span></a>
+        <a href="/usuarios" class="admin-nav-link"><i class="fa-solid fa-users" aria-hidden="true"></i><span>Usuarios</span></a>
+        <a href="/admin" class="admin-nav-link active" aria-current="page"><i class="fa-solid fa-chart-pie" aria-hidden="true"></i><span>Estadísticas</span></a>
+        <a href="/mantenimiento" class="admin-nav-link"><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i><span>Mantenimiento</span></a>
+      </nav>
+      <a href="/pos" class="admin-pos-link"><i class="fa-solid fa-cash-register" aria-hidden="true"></i><span>Ir al punto de venta</span></a>
+    </aside>
+    <div id="adminSidebarOverlay" class="admin-sidebar-overlay" aria-hidden="true"></div>
 
-    <main class="main-content">
+    <main class="admin-main-content">
+      <header class="admin-page-header">
+        <button id="btnAdminMenu" class="btn btn-secondary btn-icon admin-menu-button" type="button" aria-label="Abrir menú" aria-controls="adminSidebar" aria-expanded="false"><i class="fa-solid fa-bars" aria-hidden="true"></i></button>
+        <div>
+          <p class="admin-eyebrow">Panel administrativo</p>
+          <h1><i class="fa-solid fa-chart-line" aria-hidden="true"></i> Estadísticas de ventas</h1>
+          <p>Analiza el desempeño de vendedores, productos y categorías.</p>
+        </div>
+      </header>
       <section class="section">
         <div class="section-title-row">
-          <h2 class="section-title">Filtros de estadísticas</h2>
+          <h2 class="section-title"><i class="fa-solid fa-filter" aria-hidden="true"></i> Filtros de estadísticas</h2>
           <div class="button-group">
-            <button id="btnExportarGeneral" class="btn btn-secondary">Exportar general JPG</button>
-            <button id="btnExportarVendedor" class="btn btn-secondary">Exportar vendedor JPG</button>
-            <button id="btnExportarFechas" class="btn btn-secondary">Exportar por fechas JPG</button>
+            <button id="btnExportarGeneral" class="btn btn-secondary"><i class="fa-solid fa-file-image" aria-hidden="true"></i> Exportar general</button>
+            <button id="btnExportarVendedor" class="btn btn-secondary"><i class="fa-solid fa-user-tag" aria-hidden="true"></i> Por vendedor</button>
+            <button id="btnExportarFechas" class="btn btn-secondary"><i class="fa-solid fa-calendar-days" aria-hidden="true"></i> Por fechas</button>
           </div>
         </div>
 
@@ -67,7 +76,7 @@
             </select>
           </div>
           <div class="form-group form-group-full">
-            <button id="btnAplicarFiltros" class="btn btn-primary btn-block">Aplicar filtros</button>
+            <button id="btnAplicarFiltros" class="btn btn-primary btn-block"><i class="fa-solid fa-magnifying-glass-chart" aria-hidden="true"></i> Aplicar filtros</button>
           </div>
         </div>
       </section>
@@ -75,25 +84,25 @@
       <section class="section" id="adminReportArea">
         <div class="grid-4">
           <div class="card card-primary">
-            <div class="card-header"><h3>Total vendido</h3></div>
+            <div class="card-header"><h3><i class="fa-solid fa-wallet" aria-hidden="true"></i> Total vendido</h3></div>
             <div class="card-body"><p id="totalVendido" class="price-display">S/ 0.00</p></div>
           </div>
           <div class="card card-success">
-            <div class="card-header"><h3>Ventas</h3></div>
+            <div class="card-header"><h3><i class="fa-solid fa-receipt" aria-hidden="true"></i> Ventas</h3></div>
             <div class="card-body"><p id="cantidadVentas" class="price-display">0</p></div>
           </div>
           <div class="card card-warning">
-            <div class="card-header"><h3>Productos vendidos</h3></div>
+            <div class="card-header"><h3><i class="fa-solid fa-bag-shopping" aria-hidden="true"></i> Productos vendidos</h3></div>
             <div class="card-body"><p id="productosVendidos" class="price-display">0</p></div>
           </div>
           <div class="card card-danger">
-            <div class="card-header"><h3>Promedio por venta</h3></div>
+            <div class="card-header"><h3><i class="fa-solid fa-scale-balanced" aria-hidden="true"></i> Promedio por venta</h3></div>
             <div class="card-body"><p id="promedioVenta" class="price-display">S/ 0.00</p></div>
           </div>
         </div>
 
         <div class="section">
-          <h2 class="section-title">Ranking de vendedores</h2>
+          <h2 class="section-title"><i class="fa-solid fa-ranking-star" aria-hidden="true"></i> Ranking de vendedores</h2>
           <div class="table-wrapper">
             <table class="table">
               <thead>
@@ -114,15 +123,15 @@
 
         <div class="grid-4">
           <div class="card card-primary">
-            <div class="card-header"><h3>Top productos</h3></div>
+            <div class="card-header"><h3><i class="fa-solid fa-trophy" aria-hidden="true"></i> Top productos</h3></div>
             <div class="card-body"><ol id="listaTopProductos"></ol></div>
           </div>
           <div class="card card-success">
-            <div class="card-header"><h3>Top categorías</h3></div>
+            <div class="card-header"><h3><i class="fa-solid fa-tags" aria-hidden="true"></i> Top categorías</h3></div>
             <div class="card-body"><ol id="listaTopCategorias"></ol></div>
           </div>
           <div class="card card-warning">
-            <div class="card-header"><h3>Productos con mayor utilidad</h3></div>
+            <div class="card-header"><h3><i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i> Mayor utilidad</h3></div>
             <div class="card-body"><ol id="listaTopUtilidad"></ol></div>
           </div>
         </div>

@@ -9,21 +9,7 @@ function mostrarToast(mensaje, tipo = 'success') {
 }
 
 async function apiCall(endpoint, options = {}) {
-  const token = localStorage.getItem('invent_token');
-  const response = await fetch(`/api${endpoint}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...options.headers
-    },
-    ...options
-  });
-
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    throw new Error(data.error || 'Error al comunicarse con el servidor');
-  }
-  return data;
+  return window.inventApi.call(endpoint, options);
 }
 
 function habilitarBoton(boton, habilitado) {
@@ -40,7 +26,7 @@ async function cargarResumen() {
     document.getElementById('resumenMovimientos').textContent = resumen.movimientos;
     document.getElementById('resumenUsuarios').textContent = resumen.usuarios;
   } catch (error) {
-    mostrarToast(`❌ ${error.message}`, 'error');
+    mostrarToast(error.message, 'error');
   }
 }
 
@@ -53,7 +39,7 @@ async function cargarCategorias() {
       <option value="${categoria.id}">${categoria.nombre}</option>
     `).join('');
   } catch (error) {
-    mostrarToast(`❌ ${error.message}`, 'error');
+    mostrarToast(error.message, 'error');
   }
 }
 
@@ -65,10 +51,10 @@ async function ejecutarOperacion(botonId, endpoint, mensajeExito, confirmacion) 
   try {
     habilitarBoton(boton, false);
     await apiCall(endpoint, { method: 'POST' });
-    mostrarToast(`✅ ${mensajeExito}`);
+    mostrarToast(mensajeExito);
     await cargarResumen();
   } catch (error) {
-    mostrarToast(`❌ ${error.message}`, 'error');
+    mostrarToast(error.message, 'error');
   } finally {
     habilitarBoton(boton, true);
   }
@@ -88,10 +74,10 @@ async function eliminarProductosPorCategoria() {
     }
     habilitarBoton(boton, false);
     await apiCall(`/mantenimiento/productos/eliminar/categoria/${categoriaId}`, { method: 'POST' });
-    mostrarToast('✅ Productos de la categoría eliminados');
+    mostrarToast('Productos de la categoría eliminados');
     await cargarResumen();
   } catch (error) {
-    mostrarToast(`❌ ${error.message}`, 'error');
+    mostrarToast(error.message, 'error');
   } finally {
     const boton = document.getElementById('btnEliminarPorCategoria');
     habilitarBoton(boton, true);
@@ -133,7 +119,7 @@ async function buscarHistorial() {
       </tr>
     `).join('');
   } catch (error) {
-    mostrarToast(`❌ ${error.message}`, 'error');
+    mostrarToast(error.message, 'error');
   }
 }
 

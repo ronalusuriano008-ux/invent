@@ -9,21 +9,7 @@ function mostrarToast(mensaje, tipo = 'success') {
 }
 
 async function apiCall(endpoint, options = {}) {
-  const token = localStorage.getItem('invent_token');
-  const response = await fetch(`/api${endpoint}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...options.headers
-    },
-    ...options
-  });
-
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    throw new Error(data.error || 'Error');
-  }
-  return data;
+  return window.inventApi.call(endpoint, options);
 }
 
 function obtenerRolTexto(rol) {
@@ -54,17 +40,17 @@ async function cargarUsuarios() {
       </tr>
     `).join('');
   } catch (error) {
-    mostrarToast(`❌ ${error.message}`, 'error');
+    mostrarToast(error.message, 'error');
   }
 }
 
 window.desactivarUsuario = async function(id) {
   try {
     await apiCall(`/usuarios/${id}`, { method: 'DELETE' });
-    mostrarToast('✅ Usuario desactivado');
+    mostrarToast('Usuario desactivado');
     await cargarUsuarios();
   } catch (error) {
-    mostrarToast(`❌ ${error.message}`, 'error');
+    mostrarToast(error.message, 'error');
   }
 };
 
@@ -92,10 +78,10 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       form.reset();
-      mostrarToast('✅ Usuario creado');
+      mostrarToast('Usuario creado');
       await cargarUsuarios();
     } catch (error) {
-      mostrarToast(`❌ ${error.message}`, 'error');
+      mostrarToast(error.message, 'error');
     }
   });
 

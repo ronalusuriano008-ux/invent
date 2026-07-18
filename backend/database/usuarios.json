@@ -9,9 +9,9 @@
       "rol": 1,
       "activo": true,
       "fecha_creacion": "2026-07-16T22:30:34.760Z",
-      "fecha_actualizacion": "2026-07-17T20:43:00.438Z",
+      "fecha_actualizacion": "2026-07-18T17:36:01.639Z",
       "id": 12,
-      "token": "d8de09428601570956571133fbb6aa8dc08ae48a808e4dee08891cf70933ce02"
+      "token": "447988ebbb9b8a37eb57c3d88a8e03333c22caa9408be66ba00b3b94467442db"
     },
     {
       "usuario": "ronal",
@@ -21,9 +21,9 @@
       "rol": 2,
       "activo": true,
       "fecha_creacion": "2026-07-16T22:44:23.815Z",
-      "fecha_actualizacion": "2026-07-17T20:42:47.716Z",
+      "fecha_actualizacion": "2026-07-18T17:54:29.808Z",
       "id": 14,
-      "token": "206da1f560677f5dcb9618ba0814d87090625b91f50bba5ea02c7b8a657640c5"
+      "token": "245771e111476acbc15c94a15b82ff61013f0156365d8743f5271d43dd781b46"
     },
     {
       "usuario": "seller1",

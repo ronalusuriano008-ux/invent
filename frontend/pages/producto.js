@@ -12,22 +12,7 @@ let formMovimiento = null;
 
 async function apiCall(endpoint, options = {}) {
   try {
-    const token = localStorage.getItem('invent_token');
-    const url = `${API_BASE}${endpoint}`;
-    const response = await fetch(url, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        ...options.headers
-      },
-      ...options
-    });
-
-    if (!response.ok) {
-      throw new Error(`Error ${response.status}`);
-    }
-
-    return await response.json();
+    return await window.inventApi.call(endpoint, options);
   } catch (error) {
     mostrarToast(`Error: ${error.message}`, 'error');
     throw error;
@@ -64,9 +49,9 @@ function formatearMoneda(valor) {
 
 function obtenerBadgeMovimiento(tipo) {
   const badges = {
-    ENTRADA: '<span class="badge badge-entrada">📥 Entrada</span>',
-    SALIDA: '<span class="badge badge-salida">📤 Salida</span>',
-    AJUSTE: '<span class="badge badge-ajuste">⚙️ Ajuste</span>'
+    ENTRADA: '<span class="badge badge-entrada"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i> Entrada</span>',
+    SALIDA: '<span class="badge badge-salida"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i> Salida</span>',
+    AJUSTE: '<span class="badge badge-ajuste"><i class="fa-solid fa-sliders" aria-hidden="true"></i> Ajuste</span>'
   };
   return badges[tipo] || tipo;
 }
@@ -81,7 +66,7 @@ async function cargarProducto() {
     productoId = parseInt(id);
 
     if (!productoId) {
-      mostrarToast('❌ ID de producto inválido', 'error');
+      mostrarToast('ID de producto inválido', 'error');
       return;
     }
 
@@ -122,14 +107,14 @@ function actualizarUI(prod, movimientos) {
   document.getElementById('stockMinimo').textContent = prod.stock_minimo;
 
   // Estado del stock
-  let estado = '✅ Stock Adecuado';
+  let estado = 'Stock adecuado';
   let color = 'var(--success)';
   
   if (prod.stock === 0) {
-    estado = '❌ Agotado';
+    estado = 'Sin existencias';
     color = 'var(--danger)';
   } else if (prod.stock <= prod.stock_minimo) {
-    estado = '⚠️ Stock Bajo';
+    estado = 'Stock bajo';
     color = 'var(--warning)';
   }
 
@@ -286,10 +271,10 @@ document.addEventListener('DOMContentLoaded', async () => {
           })
         });
 
-        mostrarToast('✅ Producto actualizado');
+        mostrarToast('Producto actualizado');
         await cargarProducto();
       } catch (error) {
-        mostrarToast('❌ Error al actualizar producto', 'error');
+        mostrarToast('No se pudo actualizar el producto', 'error');
       }
     });
   }
@@ -322,11 +307,11 @@ document.addEventListener('DOMContentLoaded', async () => {
           })
         });
 
-        mostrarToast(`✅ Movimiento registrado exitosamente`);
+        mostrarToast('Movimiento registrado correctamente');
         cerrarModalMovimiento();
         await cargarProducto();
       } catch (error) {
-        mostrarToast('❌ Error al registrar movimiento', 'error');
+        mostrarToast('No se pudo registrar el movimiento', 'error');
       }
     });
   }

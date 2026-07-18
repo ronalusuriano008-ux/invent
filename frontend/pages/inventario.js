@@ -19,24 +19,7 @@
 
   async function apiCall(endpoint, options = {}) {
   try {
-    const token = localStorage.getItem('invent_token');
-    const url = `${API_BASE}${endpoint}`;
-    const response = await fetch(url, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        ...options.headers
-      },
-      ...options
-    });
-
-    if (!response.ok) {
-      const payload = await response.json().catch(() => null);
-      const message = payload?.error || response.statusText || `Error ${response.status}`;
-      throw new Error(message);
-    }
-
-    return await response.json();
+    return await window.inventApi.call(endpoint, options);
   } catch (error) {
     mostrarToast(`Error: ${error.message}`, 'error');
     throw error;
@@ -208,7 +191,7 @@ async function actualizarProducto(id, cambios) {
 
     const indice = productos.findIndex(p => p.id === Number(id));
     if (indice !== -1) productos[indice] = productActualizado;
-    mostrarToast('✅ Producto actualizado', 'success');
+    mostrarToast('Producto actualizado', 'success');
     await sincronizarEstadisticas();
   } catch (error) {
     console.error(error);
@@ -222,7 +205,7 @@ async function crearProducto(datos) {
       body: JSON.stringify(datos)
     });
     productos.unshift(nuevoProducto);
-    mostrarToast(`✅ Producto "${nuevoProducto.nombre}" creado`, 'success');
+    mostrarToast(`Producto "${nuevoProducto.nombre}" creado`, 'success');
     await sincronizarEstadisticas();
     renderTable();
   } catch (error) {
@@ -380,9 +363,9 @@ async function bulkUpdateSeleccion(action) {
     selectedIds.clear();
     selectAll.checked = false;
     await cargarTodo();
-    mostrarToast('✅ Acción masiva completada', 'success');
+    mostrarToast('Acción masiva completada', 'success');
   } catch (error) {
-    mostrarToast('❌ No se pudo ejecutar la acción masiva', 'error');
+    mostrarToast('No se pudo ejecutar la acción masiva', 'error');
     console.error(error);
   }
 }
@@ -439,13 +422,13 @@ async function importarDesdePega() {
   const errores = results.filter(r => !r.success);
 
   if (exitos) {
-    mostrarToast(`✅ ${exitos} productos importados con éxito`, 'success');
+    mostrarToast(`${exitos} productos importados correctamente`, 'success');
     pasteArea.value = '';
     await cargarTodo();
   }
 
   if (errores.length) {
-    mostrarToast(`⚠️ ${errores.length} filas no se importaron`, 'warning');
+    mostrarToast(`${errores.length} filas no se importaron`, 'warning');
   }
 }
 
@@ -471,7 +454,7 @@ function buildExcelRows() {
 
 function exportarInventarioExcel() {
   if (!window.XLSX) {
-    mostrarToast('⚠️ No se pudo cargar la librería de Excel', 'warning');
+    mostrarToast('No se pudo cargar la librería de Excel', 'warning');
     return;
   }
 
@@ -489,7 +472,7 @@ function exportarInventarioExcel() {
 
 async function descargarInventarioPDF() {
   if (!window.jspdf?.jsPDF) {
-    mostrarToast('⚠️ No se pudo cargar la librería de PDF', 'warning');
+    mostrarToast('No se pudo cargar la librería de PDF', 'warning');
     return;
   }
 
@@ -547,10 +530,10 @@ async function descargarInventarioPDF() {
     });
 
     doc.save('inventario.pdf');
-    mostrarToast('✅ PDF descargado correctamente', 'success');
+    mostrarToast('PDF descargado correctamente', 'success');
   } catch (error) {
     console.error('Error generando PDF:', error);
-    mostrarToast('❌ No se pudo generar el PDF', 'error');
+    mostrarToast('No se pudo generar el PDF', 'error');
   }
 }
 
@@ -583,7 +566,7 @@ async function inicializarInventario() {
     btnRecargar.disabled = true;
     await cargarTodo();
     btnRecargar.disabled = false;
-    mostrarToast('✅ Datos recargados', 'success');
+    mostrarToast('Datos actualizados', 'success');
   });
 
   btnDescargarInventario.addEventListener('click', descargarInventarioPDF);

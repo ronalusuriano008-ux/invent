@@ -61,22 +61,7 @@ async function cargarLibreriaEscaner() {
  */
 async function apiCall(endpoint, options = {}) {
   try {
-    const token = localStorage.getItem('invent_token');
-    const url = `${API_BASE}${endpoint}`;
-    const response = await fetch(url, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        ...options.headers
-      },
-      ...options
-    });
-
-    if (!response.ok) {
-      throw new Error(`Error ${response.status}: ${response.statusText}`);
-    }
-
-    return await response.json();
+    return await window.inventApi.call(endpoint, options);
   } catch (error) {
     console.error('Error en API call:', error);
     mostrarToast(`Error: ${error.message}`, 'error');
@@ -126,9 +111,9 @@ function formatearMoneda(valor) {
  */
 function obtenerBadgeMovimiento(tipo) {
   const badges = {
-    ENTRADA: '<span class="badge badge-entrada">📥 Entrada</span>',
-    SALIDA: '<span class="badge badge-salida">📤 Salida</span>',
-    AJUSTE: '<span class="badge badge-ajuste">⚙️ Ajuste</span>'
+    ENTRADA: '<span class="badge badge-entrada"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i> Entrada</span>',
+    SALIDA: '<span class="badge badge-salida"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i> Salida</span>',
+    AJUSTE: '<span class="badge badge-ajuste"><i class="fa-solid fa-sliders" aria-hidden="true"></i> Ajuste</span>'
   };
   return badges[tipo] || tipo;
 }
@@ -377,11 +362,11 @@ function attachListeners() {
           body: JSON.stringify(datosProducto)
         });
 
-        mostrarToast(`✅ Producto \"${nuevoProducto.nombre}\" creado exitosamente`);
+        mostrarToast(`Producto "${nuevoProducto.nombre}" creado correctamente`);
         cerrarModalProducto();
         await cargarDatos();
       } catch (error) {
-        mostrarToast('❌ Error al crear el producto', 'error');
+        mostrarToast('No se pudo crear el producto', 'error');
       }
     });
   }
@@ -389,13 +374,13 @@ function attachListeners() {
   if (btnRecargar) {
     btnRecargar.addEventListener('click', async () => {
       btnRecargar.disabled = true;
-      btnRecargar.textContent = '🔄 Recargando...';
+      btnRecargar.innerHTML = '<i class="fa-solid fa-rotate fa-spin" aria-hidden="true"></i> Actualizando…';
 
       await cargarDatos();
 
       btnRecargar.disabled = false;
-      btnRecargar.textContent = '🔄 Recargar';
-      mostrarToast('✅ Datos recargados');
+      btnRecargar.innerHTML = '<i class="fa-solid fa-rotate" aria-hidden="true"></i> Actualizar';
+      mostrarToast('Datos actualizados');
     });
   }
 
@@ -441,13 +426,13 @@ async function procesarCodigoBarras(codigo) {
     if (resultados.length > 0) {
       const producto = resultados[0];
       setScannerStatus(`Producto encontrado: ${producto.nombre}`, 'success');
-      mostrarToast(`✅ Producto encontrado: ${producto.nombre}`, 'success');
+      mostrarToast(`Producto encontrado: ${producto.nombre}`, 'success');
       window.location.href = `/producto/${producto.id}`;
       return;
     }
 
     setScannerStatus('Producto no encontrado, abriendo alta', 'warning');
-    mostrarToast('⚠️ Producto no encontrado. Se abrirá el formulario.', 'warning');
+    mostrarToast('Producto no encontrado. Se abrirá el formulario.', 'warning');
 
     if (modalProducto && formProducto) {
       await abrirModalProductoDesdeCodigo(codigoLimpio);
@@ -597,11 +582,11 @@ if (formProducto) {
         body: JSON.stringify(datosProducto)
       });
 
-      mostrarToast(`✅ Producto "${nuevoProducto.nombre}" creado exitosamente`);
+      mostrarToast(`Producto "${nuevoProducto.nombre}" creado correctamente`);
       cerrarModalProducto();
       await cargarDatos();
     } catch (error) {
-      mostrarToast('❌ Error al crear el producto', 'error');
+      mostrarToast('No se pudo crear el producto', 'error');
     }
   });
 }
@@ -688,7 +673,7 @@ async function cargarStockBajo() {
     if (productos.length === 0) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="5" class="text-center">✅ Todos los productos tienen stock adecuado</td>
+          <td colspan="5" class="text-center"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Todos los productos tienen stock adecuado</td>
         </tr>
       `;
       return;
@@ -702,7 +687,7 @@ async function cargarStockBajo() {
         <td>${producto.stock_minimo}</td>
         <td>
           <button class="btn btn-small btn-success" onclick="irAProducto(${producto.id})">
-            📝 Ver
+            <i class="fa-solid fa-eye" aria-hidden="true"></i> Ver
           </button>
         </td>
       </tr>
@@ -716,13 +701,13 @@ async function cargarStockBajo() {
 if (btnRecargar) {
   btnRecargar.addEventListener('click', async () => {
     btnRecargar.disabled = true;
-    btnRecargar.textContent = '🔄 Recargando...';
+    btnRecargar.innerHTML = '<i class="fa-solid fa-rotate fa-spin" aria-hidden="true"></i> Actualizando…';
 
     await cargarDatos();
 
     btnRecargar.disabled = false;
-    btnRecargar.textContent = '🔄 Recargar';
-    mostrarToast('✅ Datos recargados');
+    btnRecargar.innerHTML = '<i class="fa-solid fa-rotate" aria-hidden="true"></i> Actualizar';
+    mostrarToast('Datos actualizados');
   });
 }
 

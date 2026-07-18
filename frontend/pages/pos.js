@@ -120,7 +120,7 @@ async function descargarReporteDia() {
   try {
     const resumen = await cargarResumenDia();
     if (!resumen) {
-      mostrarToast('❌ No se pudo generar el reporte', 'error');
+      mostrarToast('No se pudo generar el reporte', 'error');
       return;
     }
 
@@ -132,29 +132,15 @@ async function descargarReporteDia() {
     enlace.download = `reporte-dia-${new Date().toISOString().split('T')[0]}.jpg`;
     enlace.click();
     reporte.remove();
-    mostrarToast('✅ Reporte del día descargado', 'success');
+    mostrarToast('Reporte del día descargado', 'success');
   } catch (error) {
     console.error('Error generando reporte:', error);
-    mostrarToast('❌ No se pudo generar el reporte', 'error');
+    mostrarToast('No se pudo generar el reporte', 'error');
   }
 }
 
 async function apiCall(endpoint, options = {}) {
-  const token = localStorage.getItem('invent_token');
-  const response = await fetch(`/api${endpoint}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...options.headers
-    },
-    ...options
-  });
-
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    throw new Error(data.error || 'Error de API');
-  }
-  return data;
+  return window.inventApi.call(endpoint, options);
 }
 
 function formatearMoneda(valor) {
@@ -206,7 +192,9 @@ function actualizarEstadoResumenDia() {
   if (!panel || !button) return;
 
   const visible = !panel.classList.contains('hidden');
-  button.textContent = visible ? '🗂️ Ocultar información del día' : '📊 Ver información del día';
+  button.innerHTML = visible
+    ? '<i class="fa-solid fa-folder-open" aria-hidden="true"></i> Ocultar información del día'
+    : '<i class="fa-solid fa-chart-column" aria-hidden="true"></i> Ver información del día';
 }
 
 function alternarResumenDia() {
@@ -259,7 +247,7 @@ function renderCart() {
       </td>
       <td>${formatearMoneda(item.precio_vendido * item.cantidad)}</td>
       <td>
-        <button class="btn btn-small btn-danger" data-action="remove" data-id="${item.id}">🗑️</button>
+        <button class="btn btn-small btn-danger" data-action="remove" data-id="${item.id}" aria-label="Quitar producto"><i class="fa-solid fa-trash" aria-hidden="true"></i></button>
       </td>
     </tr>
   `).join('');
@@ -274,7 +262,7 @@ function agregarProducto(producto, cantidad = 1) {
   if (!producto) return;
   const qty = Math.max(1, Number(cantidad || 1));
   if (producto.stock < qty) {
-    mostrarToast('⚠️ Stock insuficiente para ese producto', 'warning');
+    mostrarToast('Stock insuficiente para ese producto', 'warning');
     return;
   }
 
@@ -293,7 +281,7 @@ function agregarProducto(producto, cantidad = 1) {
   }
 
   renderCart();
-  mostrarToast(`✅ ${producto.nombre} agregado al carrito`, 'success');
+  mostrarToast(`${producto.nombre} agregado al carrito`, 'success');
 }
 
 function ajustarCantidad(productoId, delta) {
@@ -417,14 +405,14 @@ async function procesarCodigoBarras(codigo) {
   try {
     const resultados = await apiCall(`/productos/buscar?q=${encodeURIComponent(texto)}`);
     if (!resultados.length) {
-      mostrarToast('⚠️ Producto no encontrado', 'warning');
+      mostrarToast('Producto no encontrado', 'warning');
       return;
     }
 
     agregarProducto(resultados[0], 1);
     document.getElementById('scannerStatus').textContent = `Producto agregado: ${resultados[0].nombre}`;
   } catch (error) {
-    mostrarToast(`❌ ${error.message}`, 'error');
+    mostrarToast(error.message, 'error');
   }
 }
 
@@ -489,7 +477,7 @@ async function abrirModalEscaner() {
 
   const compatible = await cargarLibreriaEscaner();
   if (!compatible || !navigator.mediaDevices?.getUserMedia) {
-    mostrarToast('⚠️ La cámara no está disponible en este navegador', 'warning');
+    mostrarToast('La cámara no está disponible en este navegador', 'warning');
     return;
   }
 
@@ -561,7 +549,7 @@ async function abrirModalEscaner() {
     document.getElementById('scannerStatus').textContent = 'Cámara lista para escanear';
   } catch (error) {
     console.error(error);
-    mostrarToast('⚠️ No se pudo abrir la cámara', 'warning');
+    mostrarToast('No se pudo abrir la cámara', 'warning');
     if (infoLabel) infoLabel.textContent = 'No se pudo acceder a la cámara';
   }
 }
@@ -703,7 +691,7 @@ document.addEventListener('DOMContentLoaded', () => {
     confirmButton.addEventListener('click', async () => {
       if (processing) return;
       if (!cart.length) {
-        mostrarToast('⚠️ El carrito está vacío', 'warning');
+        mostrarToast('El carrito está vacío', 'warning');
         return;
       }
 
@@ -721,12 +709,12 @@ document.addEventListener('DOMContentLoaded', () => {
           })
         });
 
-        mostrarToast('✅ Venta registrada correctamente', 'success');
+        mostrarToast('Venta registrada correctamente', 'success');
         cart = [];
         renderCart();
         await cargarResumenDia();
       } catch (error) {
-        mostrarToast(`❌ ${error.message}`, 'error');
+        mostrarToast(error.message, 'error');
       } finally {
         setProcessing(false);
       }

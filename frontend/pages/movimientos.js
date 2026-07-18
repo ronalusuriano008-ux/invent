@@ -13,22 +13,7 @@ let movimientosTablaMovimientos = null;
 
 async function apiCall(endpoint, options = {}) {
   try {
-    const token = localStorage.getItem('invent_token');
-    const url = `${API_BASE}${endpoint}`;
-    const response = await fetch(url, {
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        ...options.headers
-      },
-      ...options
-    });
-
-    if (!response.ok) {
-      throw new Error(`Error ${response.status}`);
-    }
-
-    return await response.json();
+    return await window.inventApi.call(endpoint, options);
   } catch (error) {
     mostrarToast(`Error: ${error.message}`, 'error');
     throw error;
@@ -58,9 +43,9 @@ function formatearFecha(fecha) {
 
 function obtenerBadgeMovimiento(tipo) {
   const badges = {
-    ENTRADA: '<span class="badge badge-entrada">📥 Entrada</span>',
-    SALIDA: '<span class="badge badge-salida">📤 Salida</span>',
-    AJUSTE: '<span class="badge badge-ajuste">⚙️ Ajuste</span>'
+    ENTRADA: '<span class="badge badge-entrada"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i> Entrada</span>',
+    SALIDA: '<span class="badge badge-salida"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i> Salida</span>',
+    AJUSTE: '<span class="badge badge-ajuste"><i class="fa-solid fa-sliders" aria-hidden="true"></i> Ajuste</span>'
   };
   return badges[tipo] || tipo;
 }
@@ -133,7 +118,7 @@ function actualizarTabla() {
       <td>${mov.usuario}</td>
       <td>
         <button class="btn btn-small btn-primary" onclick="irAProducto(${mov.producto_id})">
-          👁️ Ver
+          <i class="fa-solid fa-eye" aria-hidden="true"></i> Ver
         </button>
       </td>
     </tr>
@@ -186,20 +171,20 @@ document.addEventListener('DOMContentLoaded', () => {
   if (movimientosBtnRecargar) {
     movimientosBtnRecargar.addEventListener('click', async () => {
       movimientosBtnRecargar.disabled = true;
-      movimientosBtnRecargar.textContent = '🔄 Recargando...';
+      movimientosBtnRecargar.innerHTML = '<i class="fa-solid fa-rotate fa-spin" aria-hidden="true"></i> Actualizando…';
 
       await cargarMovimientos();
 
       movimientosBtnRecargar.disabled = false;
-      movimientosBtnRecargar.textContent = '🔄 Recargar';
-      mostrarToast('✅ Datos recargados');
+      movimientosBtnRecargar.innerHTML = '<i class="fa-solid fa-rotate" aria-hidden="true"></i> Actualizar';
+      mostrarToast('Datos actualizados');
     });
   }
 
   if (movimientosBtnExportar) {
     movimientosBtnExportar.addEventListener('click', () => {
       if (movimientos.length === 0) {
-        mostrarToast('❌ No hay movimientos para exportar', 'warning');
+        mostrarToast('No hay movimientos para exportar', 'warning');
         return;
       }
 
@@ -235,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
       a.click();
       window.URL.revokeObjectURL(url);
 
-      mostrarToast('✅ Archivo exportado');
+      mostrarToast('Archivo exportado');
     });
   }
 
